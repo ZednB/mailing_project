@@ -1,0 +1,25 @@
+{% extends 'mail/base.html' %}
+{% block content %}
+<div class="container">
+    <div class="row text-center">
+        <div class="col-3">
+            <div class="card mb-4 box-shadow">
+                <div class="card-header">
+                    <h4 class="my-0 font-weight-normal">{{ newsletter.scheduled_time }}</h4>
+                </div>
+                <img class=card-img-top" src="#">
+                <div class="card-body">
+                    <h1 class="card-title pricing-card-title">{{ newsletter.frequency }}</h1>
+                    <ul class="list-unstyled mt-3 mb-4 text-start m-3">
+                        <li>- {{ newsletter.status }}</li>
+                        <li>- {{ newsletter.is_sent }}</li>
+                        <li>- {{ newsletter.client }}</li>>
+                    </ul>
+                    <button type="button" class="btn btn-lg btn-block btn-outline-primary mb-3">Купить</button>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
