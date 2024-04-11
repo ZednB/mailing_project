@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'mail',
+    'django_crontab',
 ]
 
 MIDDLEWARE = [
@@ -125,6 +126,17 @@ STATIC_URL = 'static/'
 STATICFILES_DIRS = (
     BASE_DIR / 'static',
 )
+
+CRONJOBS = [
+    ('*/5 * * * *', 'mail.cron.send_news')
+]
+
+EMAIL_HOST = 'smtp.yandex.ru'
+EMAIL_PORT = 465
+EMAIL_USE_SSL = True
+
+EMAIL_HOST_USER = 'Bibulatov.zubayr@yandex.ru'
+EMAIL_HOST_PASSWORD = 'jqfodtbimtsnnmty'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
