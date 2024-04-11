@@ -9,7 +9,8 @@
                     <h2 class="display-5">{{ newsletter.scheduled_time }}</h2>
                     <p class="lead">{{ newsletter.frequency }}</p>
                     <a class="btn btn-outline-secondary" href="{% url 'newsletter' newsletter.pk %}">Перейти</a>
-                    <a class="btn btn-outline-warning" href="#">Удалить</a>
+                    <a class="btn btn-outline-warning" href="{% url 'newsletter_update' newsletter.pk %}">Изменить</a>
+                    <a class="btn btn-outline-danger" href="{% url 'newsletter_delete' newsletter.pk %}">Удалить</a>
                 </div>
             </div>
         </div>

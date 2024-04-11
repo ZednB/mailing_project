@@ -12,4 +12,4 @@ class StyleFormsMixin:
 class NewsletterForm(StyleFormsMixin, forms.ModelForm):
     class Meta:
         model = NewsLetter
-        fields = ('scheduled_time', 'frequency')
+        fields = '__all__'
