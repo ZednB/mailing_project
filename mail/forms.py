@@ -1,5 +1,5 @@
 from django import forms
-from mail.models import NewsLetter
+from mail.models import NewsLetter, Message, Client
 
 
 class StyleFormsMixin:
@@ -13,3 +13,16 @@ class NewsletterForm(StyleFormsMixin, forms.ModelForm):
     class Meta:
         model = NewsLetter
         fields = '__all__'
+
+
+class MessageForm(StyleFormsMixin, forms.ModelForm):
+    class Meta:
+        model = Message
+        fields = '__all__'
+
+
+class ClientForm(StyleFormsMixin, forms.ModelForm):
+    class Meta:
+        model = Client
+        fields = '__all__'
+

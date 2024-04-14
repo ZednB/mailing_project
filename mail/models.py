@@ -1,4 +1,5 @@
 from django.db import models
+from django.utils import timezone
 
 NULLABLE = {'blank': True, 'null': True}
 
@@ -36,6 +37,9 @@ class NewsLetter(models.Model):
     status = models.CharField(choices=STATUS_CHOICES, max_length=10, default='created', verbose_name='Статус рассылки')
     is_sent = models.BooleanField(default=False)
     client = models.ManyToManyField(Client, verbose_name='Клиент')
+    message = models.ForeignKey('Message', on_delete=models.CASCADE, verbose_name='Сообщение', **NULLABLE)
+    start_mail = models.TimeField(default=timezone.now, verbose_name='Время начала рассылки')
+    end_mail = models.TimeField(default=timezone.now, verbose_name='Время окончания рассылки')
 
     def __str__(self):
         return f"{self.status} - {self.is_sent}"
