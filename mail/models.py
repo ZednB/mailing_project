@@ -64,6 +64,11 @@ class Message(models.Model):
 
 class Log(models.Model):
 
+    STATUSES = (
+        ('OK', 'Успешно'),
+        ('FAILED', 'Ошибка'),
+    )
+
     mailing_list = models.ForeignKey(NewsLetter, on_delete=models.CASCADE, verbose_name='Рассылка')
     date_time = models.DateTimeField(auto_now_add=True, verbose_name='Дата и время рассылки')
     status_try = models.CharField(max_length=100, verbose_name='Статус попытки')
