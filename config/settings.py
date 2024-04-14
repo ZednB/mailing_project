@@ -128,7 +128,7 @@ STATICFILES_DIRS = (
 )
 
 CRONJOBS = [
-    ('*/1 * * * *', 'mail.views.send_new')
+    ('*/1 * * * *', 'mail.services.send_mails')
 ]
 
 EMAIL_HOST = 'smtp.yandex.ru'
