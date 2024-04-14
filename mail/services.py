@@ -4,7 +4,7 @@ from django.utils import timezone
 from django.core.mail import send_mail
 
 from config import settings
-from mail.models import Message, Log
+from mail.models import Log
 
 
 def send_mails(mail):
