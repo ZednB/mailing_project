@@ -36,6 +36,13 @@ class MessageListView(ListView):
     model = Message
     template_name = 'mail/message_list.html'
 
+    def get_queryset(self):
+        if self.request.user.has_perm('mailing.view_all_mailings'):
+            mailing_list = super().get_queryset()
+        else:
+            mailing_list = super().get_queryset().filter(owner_id=self.request.user)
+        return mailing_list
+
 
 class MessageCreateView(CreateView):
     model = Message
