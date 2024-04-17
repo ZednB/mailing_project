@@ -1,0 +1,23 @@
+{% extends 'mail/base.html' %}
+{% block content %}
+<div class="container">
+    <div class="row text-center">
+        <div class="col-3">
+            <div class="card mb-4 box-shadow">
+                <div class="card-header">
+                    <h4 class="my-0 font-weight-normal">{{ blog.title }}</h4>
+                </div>
+                <img class=card-img-top" src="{{ blog.image|mymedia }}">
+                <div class="card-body">
+                    <h1 class="card-title pricing-card-title">{{ blog.content }}</h1>
+                    <ul class="list-unstyled mt-3 mb-4 text-start m-3">
+                        <li>- {{ blog.view_count }}</li>
+                        <li>- {{ blog.create_date }}</li>
+                    </ul>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

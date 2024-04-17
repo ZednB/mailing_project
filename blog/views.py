@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from django.views.generic import CreateView, ListView
+from django.views.generic import CreateView, ListView, DetailView
 from blog.forms import BlogForm
 from blog.models import Blog
 from django.urls import reverse_lazy
@@ -22,3 +22,13 @@ class BlogCreateView(CreateView):
 class BlogListView(ListView):
     model = Blog
     template_name = 'blog/blog_list.html'
+
+
+class BlogDetailView(DetailView):
+    model = Blog
+
+    def get_object(self, queryset=None):
+        self.object = super().get_object(queryset)
+        self.object.view_count += 1
+        self.object.save()
+        return self.object

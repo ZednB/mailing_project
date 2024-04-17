@@ -13,4 +13,4 @@ class StyleFormsMixin:
 class BlogForm(StyleFormsMixin, forms.ModelForm):
     class Meta:
         model = Blog
-        exclude = ('create_date', 'view_count',)
+        exclude = ('create_date', 'view_count', 'slug')
