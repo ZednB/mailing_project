@@ -48,9 +48,7 @@ class NewsLetterUpdateView(LoginRequiredMixin, UpdateView):
         elif self.request.user.has_perm('mail.deactivate_mails'):
             return ModeratorNewsletterForm
         else:
-            raise Http404('У вас недостаточно прав для редктирования')
-
-
+            raise Http404('У вас недостаточно прав для редактирования')
 
 
 class NewsLetterDeleteView(LoginRequiredMixin, DeleteView):
@@ -86,6 +84,12 @@ class MessageUpdateView(LoginRequiredMixin, UpdateView):
     model = Message
     form_class = MessageForm
     success_url = reverse_lazy('message_list')
+
+    def get_form_class(self):
+        if self.request.user == self.object.owner or self.request.user.is_superuser:
+            return MessageForm
+        else:
+            raise Http404('У вас недостаточно прав для редактирования')
 
 
 class MessageDeleteView(LoginRequiredMixin, DeleteView):
@@ -128,7 +132,6 @@ class LogListView(LoginRequiredMixin, ListView):
     def get_queryset(self):
         return super().get_queryset().filter(owner=self.request.user)
 
-
 # def send_new(request):
 #     if request.method == 'POST':
 #         email = request.POST['email']
@@ -151,8 +154,3 @@ class LogListView(LoginRequiredMixin, ListView):
 #             return JsonResponse({'status': 'error', 'message': str(e)})
 #     else:
 #         return JsonResponse({'status': 'error', 'message': 'Метод не поддерживается'})
-
-
-
-
-

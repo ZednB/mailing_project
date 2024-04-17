@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'mail',
     'users',
+    'blog',
     'django_crontab',
 ]
 
