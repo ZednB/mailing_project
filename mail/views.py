@@ -5,34 +5,42 @@ from mail.forms import NewsletterForm, MessageForm, ClientForm
 
 from mail.models import NewsLetter, Client, Message, Log
 
+from django.contrib.auth.mixins import LoginRequiredMixin
 
-class NewsLetterListView(ListView):
+
+class NewsLetterListView(LoginRequiredMixin, ListView):
     model = NewsLetter
     template_name = 'mail/newsletter_list.html'
 
 
-class NewsLetterCreateView(CreateView):
+class NewsLetterCreateView(LoginRequiredMixin, CreateView):
+    model = NewsLetter
+    form_class = NewsletterForm
+    success_url = reverse_lazy('newsletter_list')
+
+    def form_valid(self, form):
+        self.object = form.save()
+        self.object.user = self.request.user
+        self.object.save()
+        return super().form_valid(form)
+
+
+class NewsLetterDetailView(LoginRequiredMixin, DetailView):
+    model = NewsLetter
+
+
+class NewsLetterUpdateView(LoginRequiredMixin, UpdateView):
     model = NewsLetter
     form_class = NewsletterForm
     success_url = reverse_lazy('newsletter_list')
 
 
-class NewsLetterDetailView(DetailView):
-    model = NewsLetter
-
-
-class NewsLetterUpdateView(UpdateView):
-    model = NewsLetter
-    form_class = NewsletterForm
-    success_url = reverse_lazy('newsletter_list')
-
-
-class NewsLetterDeleteView(DeleteView):
+class NewsLetterDeleteView(LoginRequiredMixin, DeleteView):
     model = NewsLetter
     success_url = reverse_lazy('newsletter_list')
 
 
-class MessageListView(ListView):
+class MessageListView(LoginRequiredMixin, ListView):
     model = Message
     template_name = 'mail/message_list.html'
 
@@ -44,46 +52,58 @@ class MessageListView(ListView):
     #     return mailing_list
 
 
-class MessageCreateView(CreateView):
+class MessageCreateView(LoginRequiredMixin, CreateView):
+    model = Message
+    form_class = MessageForm
+    success_url = reverse_lazy('message_list')
+
+    def form_valid(self, form):
+        self.object = form.save()
+        self.object.user = self.request.user
+        self.object.save()
+        return super().form_valid(form)
+
+
+class MessageUpdateView(LoginRequiredMixin, UpdateView):
     model = Message
     form_class = MessageForm
     success_url = reverse_lazy('message_list')
 
 
-class MessageUpdateView(UpdateView):
-    model = Message
-    form_class = MessageForm
-    success_url = reverse_lazy('message_list')
-
-
-class MessageDeleteView(DeleteView):
+class MessageDeleteView(LoginRequiredMixin, DeleteView):
     model = Message
     success_url = reverse_lazy('message_list')
 
 
-class ClientListView(ListView):
+class ClientListView(LoginRequiredMixin, ListView):
     model = Client
     template_name = 'mail/client_list.html'
 
 
-class ClientCreateView(CreateView):
+class ClientCreateView(LoginRequiredMixin, CreateView):
+    model = Client
+    form_class = ClientForm
+    success_url = reverse_lazy('client_list')
+
+    def form_valid(self, form):
+        self.object = form.save()
+        self.object.user = self.request.user
+        self.object.save()
+        return super().form_valid(form)
+
+
+class ClientUpdateView(LoginRequiredMixin, UpdateView):
     model = Client
     form_class = ClientForm
     success_url = reverse_lazy('client_list')
 
 
-class ClientUpdateView(UpdateView):
-    model = Client
-    form_class = ClientForm
-    success_url = reverse_lazy('client_list')
-
-
-class ClientDeleteView(DeleteView):
+class ClientDeleteView(LoginRequiredMixin, DeleteView):
     model = Client
     success_url = reverse_lazy('client_list')
 
 
-class LogListView(ListView):
+class LogListView(LoginRequiredMixin, ListView):
     model = Log
     template_name = 'mail/log_list.html'
 

@@ -12,7 +12,7 @@ class StyleFormsMixin:
 class NewsletterForm(StyleFormsMixin, forms.ModelForm):
     class Meta:
         model = NewsLetter
-        fields = '__all__'
+        exclude = ('owner',)
 
 
 class MessageForm(StyleFormsMixin, forms.ModelForm):

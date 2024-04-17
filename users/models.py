@@ -1,7 +1,7 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 
-from mail.models import NULLABLE
+NULLABLE = {'blank': True, 'null': True}
 
 
 class User(AbstractUser):
@@ -17,5 +17,9 @@ class User(AbstractUser):
         return f'{self.email} - {self.phone}'
 
     class Meta:
+        permissions = [
+            ('view_all_users', 'Can view all users'),
+            ('block_user', 'Can block users'),
+        ]
         verbose_name = 'пользователь'
         verbose_name_plural = 'пользователи'

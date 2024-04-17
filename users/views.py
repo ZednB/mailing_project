@@ -2,7 +2,8 @@ import random
 
 from django.shortcuts import render, redirect
 from django.contrib.auth.views import LoginView, LogoutView
-from django.views.generic import CreateView, UpdateView
+from django.views.generic import CreateView, UpdateView, ListView
+from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.urls import reverse_lazy
 from django.core.mail import send_mail
 
@@ -62,3 +63,13 @@ class UserUpdateView(UpdateView):
 
     def get_object(self, queryset=None):
         return self.request.user
+
+
+class UserListView(PermissionRequiredMixin, ListView):
+    model = User
+    permission_required = 'users.view_all_users'
+
+    def get_queryset(self):
+        return super().get_queryset().exclude(pk=self.request.user.pk).exclude(is_superuser=True)
+
+

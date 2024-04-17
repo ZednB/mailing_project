@@ -1,6 +1,8 @@
 from django.db import models
 from django.utils import timezone
 
+from users.models import User
+
 NULLABLE = {'blank': True, 'null': True}
 
 
@@ -9,6 +11,7 @@ class Client(models.Model):
     name = models.CharField(max_length=100, verbose_name='Имя')
     email = models.EmailField(max_length=150, verbose_name='Email')
     comment = models.TextField(**NULLABLE, verbose_name='Комментарий')
+    owner = models.ForeignKey(User, on_delete=models.CASCADE, **NULLABLE, verbose_name='Владелец')
 
     def __str__(self):
         return f"{self.name} {self.email}"
@@ -40,11 +43,16 @@ class NewsLetter(models.Model):
     message = models.ForeignKey('Message', on_delete=models.CASCADE, verbose_name='Сообщение', **NULLABLE)
     start_mail = models.TimeField(default=timezone.now, verbose_name='Время начала рассылки')
     end_mail = models.TimeField(default=timezone.now, verbose_name='Время окончания рассылки')
+    owner = models.ForeignKey(User, on_delete=models.CASCADE, **NULLABLE, verbose_name='Владелец')
 
     def __str__(self):
         return f"{self.status} - {self.is_sent}"
 
     class Meta:
+        permissions = [
+            ('view_all_mails', 'Can view all newsletters'),
+            ('deactivate_mails', 'Can deactivate newsletter'),
+        ]
         verbose_name = 'Рассылка'
         verbose_name_plural = 'Рассылки'
 
@@ -53,6 +61,7 @@ class Message(models.Model):
 
     theme = models.CharField(max_length=50, verbose_name='Тема письма')
     body = models.TextField(verbose_name='Тело письма')
+    owner = models.ForeignKey(User, on_delete=models.CASCADE, **NULLABLE, verbose_name='Владелец')
 
     def __str__(self):
         return f"{self.theme}, {self.body}"
