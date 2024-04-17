@@ -82,6 +82,7 @@ class Log(models.Model):
     date_time = models.DateTimeField(auto_now_add=True, verbose_name='Дата и время рассылки')
     status_try = models.CharField(max_length=100, verbose_name='Статус попытки')
     response = models.TextField(**NULLABLE, verbose_name='Ответ сервера')
+    owner = models.ForeignKey(User, on_delete=models.CASCADE, **NULLABLE, verbose_name='Владелец')
 
     def __str__(self):
         return f"{self.mailing_list} - {self.date_time}"

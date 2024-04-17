@@ -1,16 +1,24 @@
 from django.urls import reverse_lazy
 from django.views.generic import ListView, CreateView, DetailView, UpdateView, DeleteView
 
-from mail.forms import NewsletterForm, MessageForm, ClientForm
+from mail.forms import NewsletterForm, MessageForm, ClientForm, ModeratorNewsletterForm
 
 from mail.models import NewsLetter, Client, Message, Log
 
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.http import Http404
 
 
 class NewsLetterListView(LoginRequiredMixin, ListView):
     model = NewsLetter
     template_name = 'mail/newsletter_list.html'
+
+    def get_queryset(self):
+        if self.request.user.has_perm('mail.view_all_mails'):
+            newsletter_list = super().get_queryset()
+        else:
+            newsletter_list = super().get_queryset().filter(owner=self.request.user)
+        return newsletter_list
 
 
 class NewsLetterCreateView(LoginRequiredMixin, CreateView):
@@ -20,7 +28,7 @@ class NewsLetterCreateView(LoginRequiredMixin, CreateView):
 
     def form_valid(self, form):
         self.object = form.save()
-        self.object.user = self.request.user
+        self.object.owner = self.request.user
         self.object.save()
         return super().form_valid(form)
 
@@ -33,6 +41,16 @@ class NewsLetterUpdateView(LoginRequiredMixin, UpdateView):
     model = NewsLetter
     form_class = NewsletterForm
     success_url = reverse_lazy('newsletter_list')
+
+    def get_form_class(self):
+        if self.request.user == self.object.owner or self.request.user.is_superuser:
+            return NewsletterForm
+        elif self.request.user.has_perm('mail.deactivate_mails'):
+            return ModeratorNewsletterForm
+        else:
+            raise Http404('У вас недостаточно прав для редктирования')
+
+
 
 
 class NewsLetterDeleteView(LoginRequiredMixin, DeleteView):
@@ -59,7 +77,7 @@ class MessageCreateView(LoginRequiredMixin, CreateView):
 
     def form_valid(self, form):
         self.object = form.save()
-        self.object.user = self.request.user
+        self.object.owner = self.request.user
         self.object.save()
         return super().form_valid(form)
 
@@ -106,6 +124,9 @@ class ClientDeleteView(LoginRequiredMixin, DeleteView):
 class LogListView(LoginRequiredMixin, ListView):
     model = Log
     template_name = 'mail/log_list.html'
+
+    def get_queryset(self):
+        return super().get_queryset().filter(owner=self.request.user)
 
 
 # def send_new(request):

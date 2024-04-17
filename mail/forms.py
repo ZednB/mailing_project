@@ -15,6 +15,12 @@ class NewsletterForm(StyleFormsMixin, forms.ModelForm):
         exclude = ('owner',)
 
 
+class ModeratorNewsletterForm(StyleFormsMixin, forms.ModelForm):
+    class Meta:
+        model = NewsLetter
+        fields = ('status',)
+
+
 class MessageForm(StyleFormsMixin, forms.ModelForm):
     class Meta:
         model = Message

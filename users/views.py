@@ -1,10 +1,11 @@
 import random
 
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.views import LoginView, LogoutView
 from django.views.generic import CreateView, UpdateView, ListView
 from django.contrib.auth.mixins import PermissionRequiredMixin
-from django.urls import reverse_lazy
+from django.contrib.auth.decorators import permission_required
+from django.urls import reverse_lazy, reverse
 from django.core.mail import send_mail
 
 from config import settings
@@ -71,5 +72,17 @@ class UserListView(PermissionRequiredMixin, ListView):
 
     def get_queryset(self):
         return super().get_queryset().exclude(pk=self.request.user.pk).exclude(is_superuser=True)
+
+
+@permission_required('users.block_user')
+def toggle_activity(request, pk):
+    user = get_object_or_404(User, pk=pk)
+    # user = User.objects.get(pk=pk)
+    if user.is_active:
+        user.is_active = False
+    else:
+        user.is_active = True
+    user.save()
+    return redirect(reverse('users:user_list'))
 
 
