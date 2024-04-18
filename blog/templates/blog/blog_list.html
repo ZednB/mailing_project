@@ -19,8 +19,13 @@
                     <p class="lead">{{ blog.content }}</p>
                     <p class="lead">{{ blog.view_count }}</p>
                     <p class="lead">{{ blog.create_date }}</p>
-                    <a class="btn btn-outline-warning" href="#">Изменить</a>
-                    <a class="btn btn-outline-danger" href="#">Удалить</a>
+                    <a class="btn btn-outline-success" href="{% url 'blog_detail' blog.pk %}">Перейти</a>
+                    {% if perms.blog.change_blog %}
+                    <a class="btn btn-outline-warning" href="{% url 'blog_update' blog.pk %}">Изменить</a>
+                    {% endif %}
+                    {% if perms.blog.delete_blog %}
+                    <a class="btn btn-outline-danger" href="{% url 'blog_delete' blog.pk %}">Удалить</a>
+                    {% endif %}
                 </div>
             </div>
         </div>
