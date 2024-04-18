@@ -35,7 +35,7 @@ class NewsLetter(models.Model):
         ('ended', 'Окончена'),
     ]
 
-    scheduled_time = models.TimeField(verbose_name='Время рассылки')
+    scheduled_time = models.TimeField(default=timezone.now, verbose_name='Время создания рассылки')
     frequency = models.CharField(choices=FREQUENCY_CHOICES, max_length=10, verbose_name='Периодичность')
     status = models.CharField(choices=STATUS_CHOICES, max_length=10, default='created', verbose_name='Статус рассылки')
     is_sent = models.BooleanField(default=False)
@@ -78,14 +78,14 @@ class Log(models.Model):
         ('FAILED', 'Ошибка'),
     )
 
-    mailing_list = models.ForeignKey(NewsLetter, on_delete=models.CASCADE, verbose_name='Рассылка')
+    mailing_list = models.ForeignKey(NewsLetter, on_delete=models.SET_NULL, **NULLABLE, verbose_name='Рассылка')
     date_time = models.DateTimeField(auto_now_add=True, verbose_name='Дата и время рассылки')
     status_try = models.CharField(max_length=100, verbose_name='Статус попытки')
     response = models.TextField(**NULLABLE, verbose_name='Ответ сервера')
     owner = models.ForeignKey(User, on_delete=models.CASCADE, **NULLABLE, verbose_name='Владелец')
 
     def __str__(self):
-        return f"{self.mailing_list} - {self.date_time}"
+        return f"{self.mailing_list} - {self.date_time}, {self.status_try}, {self.response}, {self.owner}"
 
     class Meta:
         verbose_name = 'Лог'

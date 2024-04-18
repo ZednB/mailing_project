@@ -1,1 +1,52 @@
-[{"model": "mail.client", "pk": 3, "fields": {"name": "Zubayr", "email": "bibulatov.zubayr@mail.ru", "comment": "Test"}}, {"model": "mail.client", "pk": 4, "fields": {"name": "Зубайр", "email": "Ru.Zubayr@gmail.com", "comment": "Test2"}}, {"model": "mail.newsletter", "pk": 9, "fields": {"scheduled_time": "18:17:00", "frequency": "daily", "status": "created", "is_sent": true, "message": 4, "start_mail": "20:15:21", "end_mail": "20:25:21", "client": [3]}}, {"model": "mail.message", "pk": 3, "fields": {"theme": "Test", "body": "Test email2"}}, {"model": "mail.message", "pk": 4, "fields": {"theme": "Test2", "body": "Test email"}}]
+[
+  {
+    "model": "mail.client",
+    "pk": 3,
+    "fields": {
+      "name": "Zubayr",
+      "email": "bibulatov.zubayr@mail.ru",
+      "comment": "Test"
+    }
+  },
+  {
+    "model": "mail.client",
+    "pk": 4,
+    "fields": {
+      "name": "Зубайр",
+      "email": "Ru.Zubayr@gmail.com",
+      "comment": "Test2"
+    }
+  },
+  {
+    "model": "mail.newsletter",
+    "pk": 9,
+    "fields": {
+      "scheduled_time": "18:17:00",
+      "frequency": "daily",
+      "status": "created",
+      "is_sent": true,
+      "message": 4,
+      "start_mail": "20:15:21",
+      "end_mail": "20:25:21",
+      "client": [
+        3
+      ]
+    }
+  },
+  {
+    "model": "mail.message",
+    "pk": 3,
+    "fields": {
+      "theme": "Test",
+      "body": "Test email2"
+    }
+  },
+  {
+    "model": "mail.message",
+    "pk": 4,
+    "fields": {
+      "theme": "Test2",
+      "body": "Test email"
+    }
+  }
+]

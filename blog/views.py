@@ -5,6 +5,7 @@ from blog.forms import BlogForm
 from blog.models import Blog
 from django.urls import reverse_lazy
 from pytils.translit import slugify
+from blog.services import get_blog_cache
 
 
 class BlogCreateView(PermissionRequiredMixin, CreateView):
@@ -24,6 +25,11 @@ class BlogCreateView(PermissionRequiredMixin, CreateView):
 class BlogListView(ListView):
     model = Blog
     template_name = 'blog/blog_list.html'
+
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data(*args, **kwargs)
+        context['object_list'] = get_blog_cache()
+        return context
 
 
 class BlogDetailView(DetailView):
