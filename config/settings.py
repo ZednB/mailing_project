@@ -135,8 +135,10 @@ STATICFILES_DIRS = (
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
+log_path = BASE_DIR / 'scheduled_job.log'
+
 CRONJOBS = [
-    ('* * * * *', 'mail.cron.schedule_mailing',)
+    ('* * * * *', 'mail.services.mail_filter',)
 ]
 
 EMAIL_HOST = 'smtp.yandex.ru'

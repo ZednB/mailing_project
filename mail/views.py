@@ -129,8 +129,8 @@ class LogListView(LoginRequiredMixin, ListView):
     model = Log
     template_name = 'mail/log_list.html'
 
-    def get_queryset(self):
-        return super().get_queryset().filter(owner=self.request.user)
+    # def get_queryset(self):
+    #     return super().get_queryset().filter(owner=self.request.user)
 
 # def send_new(request):
 #     if request.method == 'POST':
