@@ -1,0 +1,55 @@
+{% extends 'mail/base.html' %}
+{% block content %}
+{% load my_tags %}
+<div class="row">
+    <div class="col-3"></div>
+    <div class="col-6">
+        <div class="card">
+            <div class="card-header">Главная страница</div>
+            <div class="card-body">
+                <h6>Количество всех рассылок: {{mailing_count}}</h6>
+                <h6>Количество активных рассылок: {{mailing_active_count}}</h6>
+                <h6>Количество клиентов: {{client_count}}</h6>
+            </div>
+            <div class="card-footer">
+
+                <div class="my-3 p-3 bg-body rounded shadow-sm">
+
+                    <h2 class="border-bottom p-2 m-0">Статьи</h2>
+                    {% if queryset %}
+                    {% for object in queryset %}
+                    <div class="d-flex text-body-secondary pt-3">
+                        <div class="image-container">
+                            <img src="{{ object.image|mymedia }}" width="100" height="100">
+                        </div>
+
+                        <div class="pb-3 md-0 small lh-sm border-bottom w-100">
+
+                            <div class="d-flex justify-content-between">
+                                <strong class="text-gray-dark">Заголовок: {{object.title}}</strong>
+                            </div>
+
+                            <div class="d-flex justify-content-bottom">
+                                <strong class="text-gray-dark">Описание: {{object.body|truncatechars:50}}</strong>
+                            </div>
+
+                        </div>
+
+                        <div>
+                            <a href="{% url 'blogApp:detail' object.pk %}" class="btn btn-outline-primary">Перейти</a>
+                        </div>
+
+                        <div class="d-flex justify-content-end"></div>
+
+                    </div>
+                    {% endfor %}
+                    {% else %}
+                    <h6>Нет статей</h6>
+                    {% endif %}
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

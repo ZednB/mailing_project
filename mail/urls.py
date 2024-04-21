@@ -2,12 +2,13 @@ from django.urls import path
 
 from mail.views import NewsLetterListView, NewsLetterCreateView, NewsLetterDetailView, NewsLetterUpdateView, \
     NewsLetterDeleteView, MessageListView, MessageCreateView, MessageUpdateView, MessageDeleteView, \
-    ClientListView, ClientCreateView, ClientUpdateView, ClientDeleteView, LogListView
+    ClientListView, ClientCreateView, ClientUpdateView, ClientDeleteView, LogListView, main
 
 from django.views.decorators.cache import cache_page, never_cache
 
 urlpatterns = [
-    path('', NewsLetterListView.as_view(), name='newsletter_list'),
+    path('', main, name='main'),
+    path('newsletter_list/', NewsLetterListView.as_view(), name='newsletter_list'),
     path('newsletter_create/', never_cache(NewsLetterCreateView.as_view()), name='newsletter_create'),
     path('newsletter/<int:pk>/', cache_page(60)(NewsLetterDetailView.as_view()), name='newsletter'),
     path('newsletter_update/<int:pk>/', NewsLetterUpdateView.as_view(), name='newsletter_update'),

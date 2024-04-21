@@ -7,7 +7,16 @@ from mail.models import NewsLetter, Client, Message, Log
 
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import Http404
+from django.contrib.auth.decorators import login_required
 
+from mail.services import list_main
+from django.shortcuts import render
+
+
+@login_required
+def main(request):
+    context = list_main()
+    return render(request, 'mailingApp/main.html', context)
 
 class NewsLetterListView(LoginRequiredMixin, ListView):
     model = NewsLetter

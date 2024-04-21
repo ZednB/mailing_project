@@ -1,10 +1,12 @@
 import logging
 import smtplib
 from datetime import timedelta, datetime
+from random import sample
 
 from django.utils import timezone
 from django.core.mail import send_mail
 
+from blog.models import Blog
 from config import settings
 from mail.models import Log, NewsLetter, Client
 from django.db.models import F
@@ -81,50 +83,21 @@ def send_mails(mailing):
                     mail.status = 'ended'
                 mail.save()
 
-# def send_mails():
-#     now = timezone.localtime(timezone.now())
-#     mail_list = NewsLetter.objects.filter(start_mail=now)
-#     print(mail_list)
-#     # if mail_list.start_mail <= now <= mail_list.end_mail:
-#     for mail in mail_list:
-#         theme = mail.message.theme
-#         body = mail.message.body
-#         print(theme, body)
-#         client_list = Client.objects.all()
-#         for client in client_list:
-#             client = client.email
-#             try:
-#                 send_mail(
-#                     subject=theme,
-#                     message=body,
-#                     from_email=settings.EMAIL_HOST_USER,
-#                     recipient_list=[client.email],
-#                     fail_silently=False
-#                 )
-#                 if mail.periodicity == 'daily':
-#                     mail.sent_time = F('start_mail') + timedelta(days=1)
-#                     mail.mailing_status = 'sent'
-#                 elif mail.periodicity == 'weekly':
-#                     mail.sent_time = F('start_mail') + timedelta(days=7)
-#                     mail.mailing_status = 'sent'
-#                 elif mail.periodicity == 'monthly':
-#                     mail.sent_time = F('start_mail') + timedelta(days=30)
-#                     mail.mailing_status = 'sent'
-#                 mail.save()
-#                 print(mail)
-#                 log = Log.objects.create(
-#                     date_time=mail.start_mail,
-#                     status_try='Успешно',
-#                     mailling_list=mail,
-#                     client=client.email
-#                 )
-#                 log.save()
-#                 print(log)
-#             except smtplib.SMTPException as e:
-#                 log = Log.objects.create(
-#                     date_time=mail.end_mail,
-#                     status_try='Ошибка,',
-#                     mailing_list=mail,
-#                     client=client.email
-#                 )
-#             return log
+
+def list_main():
+    mailing_count = NewsLetter.objects.all().count
+    mailing_active_count = NewsLetter.objects.all().filter(status='create').count()
+    client_count = Client.objects.all().count
+    queryset_all = Blog.objects.all().filter(is_published=True)
+    if queryset_all:
+        queryset = sample(list(queryset_all), 3)
+    else:
+        queryset = None
+
+    context = {
+        'mailing_count': mailing_count,
+        'mailing_active_count': mailing_active_count,
+        'client_count': client_count,
+        'queryset': queryset,
+    }
+    return context
