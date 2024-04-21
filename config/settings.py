@@ -138,7 +138,7 @@ MEDIA_ROOT = BASE_DIR / 'media'
 log_path = BASE_DIR / 'scheduled_job.log'
 
 CRONJOBS = [
-    ('* * * * *', 'mail.services.mail_filter',)
+    ('* * * * *', 'mail.services.mail_filter')
 ]
 
 EMAIL_HOST = 'smtp.yandex.ru'

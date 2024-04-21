@@ -5,6 +5,18 @@ from users.models import User
 
 NULLABLE = {'blank': True, 'null': True}
 
+FREQUENCY_CHOICES = [
+    ('daily', 'Раз в день'),
+    ('weekly', 'Раз в неделю'),
+    ('monthly', 'Раз в месяц'),
+]
+
+STATUS_CHOICES = [
+    ('created', 'Создана'),
+    ('sent', 'Запущена'),
+    ('ended', 'Окончена'),
+]
+
 
 class Client(models.Model):
 
@@ -23,26 +35,14 @@ class Client(models.Model):
 
 class NewsLetter(models.Model):
 
-    FREQUENCY_CHOICES = [
-        ('daily', 'Раз в день'),
-        ('weekly', 'Раз в неделю'),
-        ('monthly', 'Раз в месяц'),
-    ]
-
-    STATUS_CHOICES = [
-        ('created', 'Создана'),
-        ('sent', 'Запущена'),
-        ('ended', 'Окончена'),
-    ]
-
-    scheduled_time = models.TimeField(default=timezone.now, verbose_name='Время создания рассылки')
+    scheduled_time = models.DateTimeField(default=timezone.now, verbose_name='Время создания рассылки')
     frequency = models.CharField(choices=FREQUENCY_CHOICES, max_length=10, verbose_name='Периодичность')
     status = models.CharField(choices=STATUS_CHOICES, max_length=10, default='created', verbose_name='Статус рассылки')
     is_sent = models.BooleanField(default=False)
     client = models.ManyToManyField(Client, verbose_name='Клиент')
     message = models.ForeignKey('Message', on_delete=models.CASCADE, verbose_name='Сообщение', **NULLABLE)
-    start_mail = models.TimeField(default=timezone.now, verbose_name='Время начала рассылки')
-    end_mail = models.TimeField(default=timezone.now, verbose_name='Время окончания рассылки')
+    start_mail = models.DateTimeField(verbose_name='Время начала рассылки')
+    end_mail = models.DateTimeField(verbose_name='Время окончания рассылки')
     owner = models.ForeignKey(User, on_delete=models.CASCADE, **NULLABLE, verbose_name='Владелец')
 
     def __str__(self):

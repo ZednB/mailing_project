@@ -24,11 +24,11 @@ class ModeratorNewsletterForm(StyleFormsMixin, forms.ModelForm):
 class MessageForm(StyleFormsMixin, forms.ModelForm):
     class Meta:
         model = Message
-        fields = '__all__'
+        exclude = ('owner',)
 
 
 class ClientForm(StyleFormsMixin, forms.ModelForm):
     class Meta:
         model = Client
-        fields = '__all__'
+        exclude = ('owner',)
 

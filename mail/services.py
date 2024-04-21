@@ -14,11 +14,11 @@ from django.db.models import F
 
 
 def mail_filter():
-    date_time = datetime.now()
+    date_time = timezone.now()
     mail_list = NewsLetter.objects.all()
     for mail in mail_list:
         end_mail = mail.end_mail
-        end_mail = datetime.combine(date_time.date(), end_mail)
+        # end_mail = datetime.combine(date_time.date(), end_mail)
         if end_mail <= date_time:
             mail.status = 'ended'
             mail.save()
@@ -35,14 +35,14 @@ def send_mails(mailing):
     # date_time = date_time.replace(tzinfo=timezone.utc)
     for mail in mailing:
         start_mail = mail.start_mail
-        start_mail = datetime.combine(date_time.date(), start_mail)
-        start_mail = start_mail.replace(tzinfo=date_time.tzinfo)
+        # start_mail = datetime.combine(date_time.date(), start_mail)
+        # start_mail = start_mail.replace(tzinfo=date_time.tzinfo)
         end_mail = mail.end_mail
-        end_mail = datetime.combine(date_time.date(), end_mail)
-        end_mail = end_mail.replace(tzinfo=date_time.tzinfo)
+        # end_mail = datetime.combine(date_time.date(), end_mail)
+        # end_mail = end_mail.replace(tzinfo=date_time.tzinfo)
         scheduled_time = mail.scheduled_time
-        scheduled_time = scheduled_time.replace(tzinfo=date_time.tzinfo)
-        scheduled_time = datetime.combine(date_time.date(), scheduled_time)
+        # scheduled_time = scheduled_time.replace(tzinfo=date_time.tzinfo)
+        # scheduled_time = datetime.combine(date_time.date(), scheduled_time)
 
         if start_mail <= date_time <= end_mail and date_time >= scheduled_time:
             mail.status = 'sent'
@@ -87,7 +87,7 @@ def send_mails(mailing):
 
 def list_main():
     mailing_count = NewsLetter.objects.all().count
-    mailing_active_count = NewsLetter.objects.all().filter(status='create').count()
+    mailing_active_count = NewsLetter.objects.all().filter(status='created').count()
     client_count = Client.objects.all().count
     queryset_all = Blog.objects.all().filter(is_published=True)
     if queryset_all:

@@ -18,6 +18,7 @@ def main(request):
     context = list_main()
     return render(request, 'mail/home_page.html', context)
 
+
 class NewsLetterListView(LoginRequiredMixin, ListView):
     model = NewsLetter
     template_name = 'mail/newsletter_list.html'
@@ -68,13 +69,6 @@ class NewsLetterDeleteView(LoginRequiredMixin, DeleteView):
 class MessageListView(LoginRequiredMixin, ListView):
     model = Message
     template_name = 'mail/message_list.html'
-
-    # def get_queryset(self):
-    #     if self.request.user.has_perm('mailing.view_all_mailings'):
-    #         mailing_list = super().get_queryset()
-    #     else:
-    #         mailing_list = super().get_queryset().filter(owner_id=self.request.user)
-    #     return mailing_list
 
 
 class MessageCreateView(LoginRequiredMixin, CreateView):
@@ -134,32 +128,22 @@ class ClientDeleteView(LoginRequiredMixin, DeleteView):
     success_url = reverse_lazy('client_list')
 
 
+class LogCreate(CreateView):
+    """
+    Класс для создания логов
+    """
+    model = Log
+
+    def form_valid(self, form):
+        self.object = form.save()
+        self.object.user = self.request.user
+        self.object.save()
+        return super().form_valid(form)
+
+
 class LogListView(LoginRequiredMixin, ListView):
     model = Log
     template_name = 'mail/log_list.html'
 
-    # def get_queryset(self):
-    #     return super().get_queryset().filter(owner=self.request.user)
-
-# def send_new(request):
-#     if request.method == 'POST':
-#         email = request.POST['email']
-#         try:
-#             client = Client.objects.get(email=email)
-#             message = Message.objects.all()
-#             theme = message.theme
-#             body = message.body
-#             send_mail(
-#                 subject=theme,
-#                 message=body,
-#                 from_email=settings.EMAIL_HOST_USER,
-#                 recipient_list=[client.email]
-#             )
-#             logging.info(f'Отправлено письмо на адрес {client.email} в {timezone.now()}')
-#             return JsonResponse({'status': 'status', 'message': 'response'})
-#         except ObjectDoesNotExist:
-#             return JsonResponse({'status': 'error', 'message': 'Sending settings not found'})
-#         except Exception as e:
-#             return JsonResponse({'status': 'error', 'message': str(e)})
-#     else:
-#         return JsonResponse({'status': 'error', 'message': 'Метод не поддерживается'})
+    def get_queryset(self):
+        return super().get_queryset().filter(owner=self.request.user)
