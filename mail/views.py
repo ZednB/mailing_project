@@ -16,7 +16,7 @@ from django.shortcuts import render
 @login_required
 def main(request):
     context = list_main()
-    return render(request, 'mailingApp/main.html', context)
+    return render(request, 'mail/home_page.html', context)
 
 class NewsLetterListView(LoginRequiredMixin, ListView):
     model = NewsLetter

@@ -1,4 +1,5 @@
 import logging
+import random
 import smtplib
 from datetime import timedelta, datetime
 from random import sample
@@ -90,7 +91,7 @@ def list_main():
     client_count = Client.objects.all().count
     queryset_all = Blog.objects.all().filter(is_published=True)
     if queryset_all:
-        queryset = sample(list(queryset_all), 3)
+        queryset = random.choices(list(queryset_all), k=3)
     else:
         queryset = None
 

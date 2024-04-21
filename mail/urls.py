@@ -7,7 +7,7 @@ from mail.views import NewsLetterListView, NewsLetterCreateView, NewsLetterDetai
 from django.views.decorators.cache import cache_page, never_cache
 
 urlpatterns = [
-    path('', main, name='main'),
+    path('', main, name='home_page'),
     path('newsletter_list/', NewsLetterListView.as_view(), name='newsletter_list'),
     path('newsletter_create/', never_cache(NewsLetterCreateView.as_view()), name='newsletter_create'),
     path('newsletter/<int:pk>/', cache_page(60)(NewsLetterDetailView.as_view()), name='newsletter'),
