@@ -17,6 +17,7 @@
             <div class="card mb-4 box-shadow">
                 <div class="card-body">
                     <h2 class="display-5">{{ client.name }}</h2>
+                    <h2 class="display-5">{{ client.owner }}</h2>
                     <p class="lead">{{ client.email }}</p>
                     <p class="lead">{{ client.comment }}</p>
                     <a class="btn btn-outline-warning" href="{% url 'client_update' client.pk %}">Изменить</a>

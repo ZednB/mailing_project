@@ -8,7 +8,7 @@ from django.views.decorators.cache import cache_page, never_cache
 
 urlpatterns = [
     path('', cache_page(60)(main), name='home_page'),
-    path('newsletter_list/', NewsLetterListView.as_view(), name='newsletter_list'),
+    path('newsletter_list/', cache_page(60)(NewsLetterListView.as_view()), name='newsletter_list'),
     path('newsletter_create/', never_cache(NewsLetterCreateView.as_view()), name='newsletter_create'),
     path('newsletter/<int:pk>/', cache_page(60)(NewsLetterDetailView.as_view()), name='newsletter'),
     path('newsletter_update/<int:pk>/', NewsLetterUpdateView.as_view(), name='newsletter_update'),
